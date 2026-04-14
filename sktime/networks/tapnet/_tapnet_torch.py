@@ -203,18 +203,16 @@ class TapNetNetworkTorch(NNModule):
         # Random projection parameters (RDP)
         if self.use_rp:
             self.rp_dim = math.floor(self.n_dims * self.rp_alpha / self.rp_group)
-            if self.rp_dim < 1:
+            self.rp_dim = min(self.rp_dim, self.n_dims)
+            if self.n_dims < 2 or self.rp_dim < 1:
                 warnings.warn(
                     "Disabling random dimension permutation (RDP) because the "
-                    "computed rp_dim is 0. This can happen for univariate data; "
+                    "computed rp_dim is 0 or the input is univariate; "
                     "RDP requires multivariate inputs.",
                     UserWarning,
                 )
                 self.use_rp = False
                 self.rp_dim = 0
-            else:
-                # rp_dim cannot be greater than n_dims
-                self.rp_dim = min(self.rp_dim, self.n_dims)
         else:
             self.rp_dim = 0
 
