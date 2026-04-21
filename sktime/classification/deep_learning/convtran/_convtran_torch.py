@@ -98,6 +98,9 @@ class ConvTranClassifierTorch(BaseDeepClassifierPytorch):
         "property:randomness": "stochastic",
         "capability:random_state": True,
         "capability:multivariate": True,
+        # CI and test tags
+        # ----------------
+        "tests:vm": True,
     }
 
     def __init__(
