@@ -228,13 +228,11 @@ class TapNetNetworkTorch(NNModule):
             Dropout = _safe_import("torch.nn.Dropout")
             self.lstm_dropout_layer = Dropout(p=self.lstm_dropout)
             if self.use_att:
-                SeqSelfAttentionTorch = _safe_import(
-                    "sktime.libs._torch_self_attention.seq_self_attention.SeqSelfAttentionTorch"
-                )
+                from sktime.libs._torch_self_attention import SeqSelfAttentionTorch
+
                 self.lstm_attn = SeqSelfAttentionTorch(
-                    self.lstm_dim,
-                    attention_type="multiplicative",
                     input_dim=self.lstm_dim,
+                    attention_type="multiplicative",
                 )
 
         # Layers for CNN
@@ -246,13 +244,13 @@ class TapNetNetworkTorch(NNModule):
                 )
                 self.rp_conv_shared = self._make_conv_shared_block()
                 if self.use_att:
-                    SeqSelfAttentionTorch = _safe_import(
-                        "sktime.libs._torch_self_attention.seq_self_attention.SeqSelfAttentionTorch"
+                    from sktime.libs._torch_self_attention import (
+                        SeqSelfAttentionTorch,
                     )
+
                     self.rp_attn = SeqSelfAttentionTorch(
-                        self.filter_sizes[-1],
-                        attention_type="multiplicative",
                         input_dim=self.filter_sizes[-1],
+                        attention_type="multiplicative",
                     )
                 # Pre-compute RP indices (deterministic if random_state is set)
                 for i in range(self.rp_group):
@@ -267,11 +265,11 @@ class TapNetNetworkTorch(NNModule):
                 self.conv1 = self._make_conv1_block(self.n_dims)
                 self.conv_shared = self._make_conv_shared_block()
                 if self.use_att:
-                    SeqSelfAttentionTorch = _safe_import(
-                        "sktime.libs._torch_self_attention.seq_self_attention.SeqSelfAttentionTorch"
+                    from sktime.libs._torch_self_attention import (
+                        SeqSelfAttentionTorch,
                     )
+
                     self.cnn_attn = SeqSelfAttentionTorch(
-                        self.filter_sizes[-1],
                         input_dim=self.filter_sizes[-1],
                     )
 
